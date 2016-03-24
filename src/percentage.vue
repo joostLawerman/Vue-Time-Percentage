@@ -11,7 +11,7 @@
 		props: ["start","end"],
 		data(){
 			return {
-				percentage: "",
+				percentage: 0,
 				timeoutTime: 10
 			}
 		},
@@ -22,20 +22,26 @@
 		methods: {
 			loop() {
 				let __self = this;
+				
 				if (this.end > this.getPresent()) {
 					this.calcPercentage();
 					setTimeout(function() {
 						__self.loop();
 					}, this.timeoutTime);
+					return;
 				}
+				this.percentage = 100;
 				return;
 			},
 			getPresent() {
-				return Math.round(new Date().getTime() / 1000);
+				return new Date().getTime() / 1000;
 			},
 			calcPercentage() {
-				let result = (this.getPresent() - this.start) / (this.end - this.start) * 100;
-				this.percentage = Math.round(result);
+				let result = Math.round((this.getPresent() - this.start) / (this.end - this.start) * 100);
+				
+				if (result > 0) {
+					this.percentage = result;
+				}
 			}
 		}
 	}
